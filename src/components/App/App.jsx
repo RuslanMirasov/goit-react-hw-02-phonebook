@@ -22,7 +22,7 @@ export class App extends React.Component{
         </Section>
 
         <Section title='Contacts'>
-          <Notification message='There is no contacts in phonebook!'></Notification>
+          <Notification message='There is no contacts in Phonebook!'></Notification>
         </Section>       
 
       </main>
