@@ -23,3 +23,13 @@ code {
 ul {
   list-style: none;
 }
+
+.label__error {
+  color: #c31313;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+input.red {
+  border: 1px solid #c31313;
+}

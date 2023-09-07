@@ -14,7 +14,7 @@
   display: flex;
   width: 100%;
   flex-wrap: nowrap;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   padding: 20px 0px;
   border-top: 1px solid #ccc;
@@ -29,12 +29,21 @@
   line-height: 1.2;
   color: #344c69;
   font-weight: 600;
+  width: 45%;
+}
+
+.contactList li.contactListHead .contactListText {
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
 .delButton {
   background: none;
+  width: 10%;
+  max-width: 70px;
+  margin-left: auto;
   font-size: 12px;
-  padding: 8px 14px;
+  padding: 8px 4px;
   line-height: 1;
   border: 1px solid #c31313;
   color: #c31313;
@@ -48,4 +57,32 @@
 .delButton:focus {
   color: #fff;
   background: #c31313;
+}
+
+@media screen and (max-width: 767px) {
+  .contactListText {
+    font-size: 16px;
+    width: 40%;
+  }
+
+  .delButton {
+    width: 20%;
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .contactList li {
+    flex-wrap: wrap;
+  }
+  .contactList li.contactListHead {
+    display: none;
+  }
+  .contactListText {
+    width: 70%;
+    line-height: 1.5;
+  }
+  .delButton {
+    position: absolute;
+    right: 20px;
+  }
 }
