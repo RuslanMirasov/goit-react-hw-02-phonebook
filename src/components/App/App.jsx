@@ -1,37 +1,33 @@
-import React from "react";
+import { Component } from 'react';
 import css from './App.module.css';
 import { nanoid } from "nanoid";
-import { formValidation } from 'utils/formValidation.js';
 import { Section } from 'components/Section/Section';
 import { Notification } from 'components/Notification/Notification';
-import { ContactForm } from 'components/ContactForm/ContactForm';
 import { Filter } from 'components/Filter/Filter';
 import { ContactList } from 'components/ContactList/ContactList';
+import ContactForm from 'components/ContactForm/ContactForm';
 
-export class App extends React.Component{
+export class App extends Component{
 
   state = {
-    contacts: [],
-    filter:null,
-    name: '',
-    number: '',
+    contacts: [      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },],
+    filter:'',
   };
 
-  handleChange = (event) => {
-    this.setState({
-      [event.currentTarget.name]: event.currentTarget.value,
-    });
+  handleFilterChange = event => {
+    const filterValue = event.target.value;
+    this.setState({ filter: filterValue });
   };
 
-  filterContacts = (event) => {
-    const searchName = event.currentTarget.value;
-    if (searchName.length === 0) {
-      this.setState({ filter: null });
-      return;
-    }
-    this.setState((prev) => ({
-      filter: prev.contacts.filter(contact => contact.name.toLowerCase().includes(searchName.toLowerCase()))
-    }));
+  onFormSubmit = newContact => {
+      const isSameName = this.state.contacts.find(contact => contact.name.toLowerCase() === newContact.name.toLowerCase());
+      if (isSameName) return alert(`${isSameName.name} is already in contacts`);
+      this.setState(prevState => ({
+        contacts: [ {...newContact,id: nanoid()}, ...prevState.contacts],
+      }));
   };
 
   deleteContact = (contactId) => {
@@ -40,36 +36,29 @@ export class App extends React.Component{
     }));
   };
 
-  addContact = (event) => {
-    event.preventDefault();
-    const form = event.currentTarget;
-
-    if (formValidation(form) === true) {
-      const isSameName = this.state.contacts.reduce((acc, contact) => (contact.name === form.name.value ? acc + 1 : acc), 0);
-      isSameName > 0 ? alert(`${form.name.value} is already in contacts!`) :
-      this.setState(prevState=>({
-        contacts: [{ id: nanoid(), name: this.state.name, number: this.state.number }, ...prevState.contacts ],
-      }));
-      form.reset();
-    }
+  getFilteredContacts = () => {
+    const { contacts, filter } = this.state;
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
   };
 
   render() {
     const { contacts } = this.state
-    const { filter } = this.state
-    
+    const filteredContacts = this.getFilteredContacts();
+
     return (
       <main className={css.main}>
-        <h1 hidden>React HW-o2-Phonebook</h1>
+        <h1 hidden>React HW-02-Phonebook</h1>
 
         <Section title='Phonebook'>
-          <ContactForm onAddContact={this.addContact} onInput={this.handleChange} />
+          <ContactForm handleFormSubmit={this.onFormSubmit} />
         </Section>
 
         <Section title='Contacts'>
-          {contacts.length > 1 && <Filter onInput={this.filterContacts} />}
+          {contacts.length > 1 && <Filter name={this.state.filter} handleFilterChange={this.handleFilterChange} />}
           {contacts.length > 0 ?
-            <ContactList contacts={contacts} filter={filter} onDeleteContact={this.deleteContact} /> :
+            <ContactList contacts={filteredContacts} onDeleteContact={this.deleteContact} /> :
             <Notification message='There is no contacts in Phonebook!'></Notification>
           }
         </Section>       
@@ -78,3 +67,5 @@ export class App extends React.Component{
     );
   };
 };
+
+export default App;

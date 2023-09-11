@@ -1,13 +1,13 @@
 import css from './ContactList.module.css';
 
-export const ContactList = ({ contacts, filter, onDeleteContact }) => {
+export const ContactList = ({ contacts, onDeleteContact }) => {
    return (
       <ul className={css.contactList}>
          <li className={css.contactListHead}>
             <p className={css.contactListText}>Name</p>
             <p className={css.contactListText}>Phone</p>
          </li>
-         {(filter ?? contacts).map(({id, name, number}) => (
+         {contacts.map(({ id, name, number }) => (
             <li key={id}>
                <p className={css.contactListText}>{name}</p>
                <p className={css.contactListText}>{number}</p>
@@ -15,5 +15,5 @@ export const ContactList = ({ contacts, filter, onDeleteContact }) => {
             </li>
          ))}
       </ul>
-   )
-}
+   );
+};
