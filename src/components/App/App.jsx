@@ -53,9 +53,11 @@ export class App extends Component{
         </Section>
 
         <Section title='Contacts'>
-          {contacts.length > 1 && <Filter name={this.state.filter} handleFilterChange={this.handleFilterChange} />}
           {contacts.length > 0 ?
-            <ContactList contacts={filteredContacts} onDeleteContact={this.deleteContact} /> :
+            <>
+              <Filter name={this.state.filter} handleFilterChange={this.handleFilterChange} />
+              <ContactList contacts={filteredContacts} onDeleteContact={this.deleteContact} />
+            </> :
             <Notification message='There is no contacts in Phonebook!'></Notification>
           }
         </Section>       
